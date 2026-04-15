@@ -1,0 +1,1008 @@
+/* ui/theme/light_theme.qss */
+
+/* --- ОБЩИЕ СТИЛИ --- */
+QWidget {
+    background-color: #F0F0F0;
+    color: #2D2D2D;
+    font-size: 11pt;
+    border: none;
+}
+
+/* --- ОСНОВНЫЕ ПАНЕЛИ --- */
+QFrame#leftToolbar {
+    background-color: #E0E0E0;
+}
+
+QFrame#rightInspector {
+    background-color: #E0E0E0;
+}
+
+/* --- КНОПКИ --- */
+QPushButton {
+    background-color: #DCDCDC;
+    border-radius: 5px;
+    padding: 8px;
+}
+
+QPushButton:hover {
+    background-color: #C8C8C8;
+}
+
+QPushButton:pressed {
+    background-color: #B4B4B4;
+}
+
+/* Кнопки на левой панели */
+QFrame#leftToolbar QPushButton {
+    font-size: 24pt;
+    color: #4A4A4A;
+}
+
+/* Главная кнопка "Сгенерировать" */
+QPushButton#ProcessButton {
+    background-color: #0078D7;
+    font-size: 14pt;
+    font-weight: bold;
+    padding: 12px;
+    color: #FFFFFF;
+}
+
+QPushButton#ProcessButton:hover {
+    background-color: #0088F7;
+}
+
+QPushButton#ProcessButton:disabled {
+    background-color: #DCDCDC;
+    color: #AAAAAA;
+}
+
+/* --- ПОЛЯ ВВОДА --- */
+QLineEdit, QSpinBox, QDoubleSpinBox {
+    background-color: #FFFFFF;
+    padding: 8px;
+    border-radius: 3px;
+    border: 1px solid #BBBBBB;
+    font-size: 11pt;
+}
+
+QLineEdit:focus, QSpinBox:focus, QDoubleSpinBox:focus {
+    border: 1px solid #0078D7;
+}
+
+/* --- ЧЕКБОКСЫ --- */
+QCheckBox {
+    spacing: 8px;
+}
+
+QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #BBBBBB;
+    border-radius: 3px;
+    background-color: #FFFFFF;
+}
+
+QCheckBox::indicator:checked {
+    background-color: #0078D7;
+    border: 1px solid #0078D7;
+}
+
+/* --- СВОРАЧИВАЕМЫЕ БЛОКИ --- */
+QToolButton#collapsibleHeader {
+    background-color: #E8E8E8;
+    border-radius: 5px;
+    padding: 8px;
+    font-size: 12pt;
+    font-weight: bold;
+    text-align: left;
+}
+
+QFrame#collapsibleContent {
+    border-top: 1px solid #DCDCDC;
+}
+
+/* --- STATUS BAR --- */
+QStatusBar {
+    background-color: #E0E0E0;
+    color: #555555;
+}
+
+/* ===== СЕЛЕКТОРЫ (СВЕТЛАЯ ТЕМА) ===== */
+
+/* --- Фон и контейнер --- */
+#mainContainer {
+    background-color: #f7f7f7;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+/* --- Общие элементы --- */
+#searchInput, MiniButton, #addButton, #deleteButton {
+    border-radius: 6px;
+    font-weight: bold;
+}
+#searchInput {
+    background-color: #FFFFFF; border: 1px solid #ddd; padding: 7px 12px; color: #2D2D2D;
+}
+#searchInput:focus { border: 1px solid #1890FF; }
+#infoLabel {
+    color: #555; font-size: 9pt; padding: 4px; border-top: 1px solid #eee; margin-top: 5px;
+}
+MiniButton {
+    background-color: #e0e0e0; border: 1px solid #ccc; color: #333; font-size: 12px;
+}
+MiniButton:hover { background-color: #d0d0d0; }
+
+/* --- Элементы списков (ИСПРАВЛЕНИЕ ПРОЗРАЧНОСТИ) --- */
+ColorItem, SizeItem {
+    border-radius: 4px; background-color: transparent;
+}
+ColorItem:hover, SizeItem:hover {
+    background-color: rgba(0, 0, 0, 5%);
+}
+ColorItem[selected="true"], SizeItem[selected="true"] {
+    background-color: rgba(24, 144, 255, 15%);
+}
+/* Делаем дочерние виджеты прозрачными, чтобы фон родителя был виден */
+#colorNameLabel, #sizeNameLabel, #sizeDiameterLabel {
+    background-color: transparent;
+}
+
+/* --- Селектор Цвета --- */
+#miniEditButton {
+    background-color: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    color: #888;
+    font-size: 4pt;
+    font-weight: bold;
+    opacity: 0; /* Кнопка по умолчанию полностью прозрачна */
+}
+
+/* Делаем кнопку видимой и меняем стиль, когда курсор на всей строке (ColorItem) */
+ColorItem:hover #miniEditButton {
+    opacity: 1;
+}
+
+#miniEditButton:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #2D2D2D;
+}
+
+ColorItem #colorCircle {
+    border-radius: 8px; /* Эта строка делает квадраты кругами */
+    border: 1px solid #aaa;
+}
+
+ColorItem[selected="true"] #colorNameLabel { color: #0056b3; font-weight: bold; }
+
+/* --- Селектор Размеров --- */
+
+SizeItem[selected="true"] #sizeNameLabel { color: #0056b3; }
+
+/* ===== СТИЛИ ДЛЯ ДИАЛОГА ЭКСПОРТА (СВЕТЛАЯ ТЕМА) ===== */
+
+QDialog#exportDialog {
+    background-color: #F0F0F0;
+}
+
+QGroupBox#exportGroup {
+    border: 1px solid #DCDCDC;
+    border-radius: 8px;
+    margin-top: 10px;
+    padding: 10px;
+}
+
+QGroupBox#exportGroup::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    left: 10px;
+    padding: 0 5px 0 5px;
+    background-color: #F0F0F0;
+    color: #2D2D2D;
+}
+
+QRadioButton, QCheckBox {
+    spacing: 8px;
+    color: #2D2D2D;
+}
+
+QRadioButton::indicator, QCheckBox::indicator {
+    width: 18px;
+    height: 18px;
+}
+
+QRadioButton::indicator::unchecked {
+    border: 2px solid #AAAAAA;
+    border-radius: 9px;
+    background-color: #FFFFFF;
+}
+
+QRadioButton::indicator::checked {
+    border: 2px solid #0078D7;
+    border-radius: 9px;
+    background-color: #0078D7;
+}
+
+QCheckBox::indicator::unchecked {
+    border: 2px solid #AAAAAA;
+    border-radius: 4px;
+    background-color: #FFFFFF;
+}
+
+QCheckBox::indicator::checked {
+    border: 2px solid #0078D7;
+    background-color: #0078D7;
+}
+
+QDialogButtonBox QPushButton {
+    min-width: 100px;
+    font-weight: bold;
+}
+
+/* --- Диалог создания текста --- */
+QDialog#textCreatorDialog {
+    background-color: #FFFFFF;
+}
+
+QPlainTextEdit#textInputArea {
+    background-color: #F0F0F0;
+    border: 1px solid #DCDCDC;
+    border-radius: 4px;
+    color: #2D2D2D;
+    font-size: 12pt;
+}
+
+QPushButton#alignButton {
+    background-color: #E0E0E0;
+    border: none;
+    padding: 6px;
+}
+QPushButton#alignButton:checked {
+    background-color: #0078D7;
+}
+
+QPushButton#acceptButton {
+    background-color: #2A8C4A;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    padding: 8px;
+}
+QPushButton#cancelButton {
+    background-color: transparent;
+    border: 1px solid #AAA;
+    color: #333;
+    border-radius: 4px;
+    padding: 8px;
+}
+
+QSlider::groove:horizontal {
+    background: #E0E0E0;
+    height: 4px;
+    border-radius: 2px;
+}
+QSlider::handle:horizontal {
+    background: #0078D7;
+    width: 14px;
+    height: 14px;
+    margin: -5px 0;
+    border-radius: 7px;
+}
+QSlider::sub-page:horizontal { background: #0088F7; }
+
+/* === ОСНОВНАЯ ПАНЕЛЬ === */
+QWidget#editToolbar {
+    background-color: transparent;
+}
+
+/* === СТЕКЛЯННЫЕ КАРТОЧКИ === */
+QFrame#glassCard {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+}
+
+QFrame#infoPanel {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+}
+
+QFrame#selectionTools {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+}
+
+QFrame#additionMode {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+}
+
+/* === АКТИВНЫЙ РЕЖИМ ДОБАВЛЕНИЯ === */
+QFrame#additionMode[additionActive="true"] {
+    background-color: rgba(52, 199, 89, 0.15);
+    border: 1px solid rgba(52, 199, 89, 0.4);
+}
+
+/* === ЗАГОЛОВКИ И МЕТКИ === */
+QLabel#panelTitle {
+    color: #2D2D2D;
+    font-size: 14pt;
+    font-weight: 600;
+    background: transparent;
+}
+
+QLabel#selectionCount {
+    color: #2D2D2D;
+    font-size: 14pt;
+    font-weight: 600;
+    background: transparent;
+}
+
+QLabel#sectionLabel {
+    color: #666666;
+    font-size: 10pt;
+    font-weight: 500;
+    background: transparent;
+    padding-top: 5px;
+}
+
+QLabel#coordinatesLabel {
+    color: #999999;
+    font-size: 10pt;
+    font-weight: 400;
+    background: transparent;
+}
+
+QLabel#hintLabel {
+    color: #34C759;
+    font-size: 10pt;
+    font-weight: 500;
+    font-style: italic;
+    background: transparent;
+}
+
+/* === КНОПКА ОТОБРАЖЕНИЯ ЦВЕТА === */
+QPushButton#colorDisplayButton {
+    background-color: rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    font-size: 11pt;
+    font-weight: 600;
+    color: #2D2D2D;
+    min-height: 70px;
+}
+
+QPushButton#colorDisplayButton:hover {
+    background-color: rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+/* Состояние со смешанными цветами */
+QPushButton#colorDisplayButton[colorState="mixed"] {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                stop:0 #f857a6, stop:1 #ff5858);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #FFFFFF;
+}
+
+QPushButton#colorDisplayButton:hover {
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* === СОВРЕМЕННЫЕ КНОПКИ === */
+QPushButton#modernButton {
+    background-color: rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 18px;
+    padding: 8px 16px;
+    font-size: 11pt;
+    font-weight: 500;
+    color: #2D2D2D;
+    min-height: 36px;
+    min-width: 80px;
+}
+
+QPushButton#modernButton:hover {
+    background-color: rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    color: #000000;
+}
+
+QPushButton#modernButton:pressed {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+QPushButton#modernButton:disabled {
+    background-color: rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    color: #AAAAAA;
+}
+
+/* Активное состояние */
+QPushButton#modernButton[active="true"] {
+    background-color: #007AFF;
+    border: 1px solid #007AFF;
+    font-weight: 600;
+    color: #FFFFFF;
+}
+
+QPushButton#modernButton:hover {
+    background-color: #0056CC;
+    border: 1px solid #0056CC;
+}
+
+/* === КНОПКА ОТОБРАЖЕНИЯ РАЗМЕРА === */
+QPushButton#sizeDisplayButton {
+    background-color: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 12pt;
+    font-weight: 600;
+    color: #2D2D2D;
+    text-align: center;
+    min-height: 40px;
+    min-width: 120px;
+}
+
+QPushButton#sizeDisplayButton:hover {
+    background-color: rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    color: #000000;
+}
+
+QPushButton#sizeDisplayButton:pressed {
+    background-color: rgba(0, 0, 0, 0.12);
+}
+
+QPushButton#sizeDisplayButton[sizeState="mixed"] {
+    background-color: rgba(255, 165, 0, 0.15);
+    border: 1px solid rgba(255, 165, 0, 0.3);
+    color: #CC8400;
+}
+
+/* === СОВРЕМЕННЫЙ ПЕРЕКЛЮЧАТЕЛЬ === */
+QCheckBox#modernToggle {
+    color: #2D2D2D;
+    font-size: 12pt;
+    font-weight: 600;
+    spacing: 12px;
+    background: transparent;
+    min-height: 32px;
+}
+
+QCheckBox#modernToggle::indicator {
+    width: 44px;
+    height: 24px;
+    border-radius: 12px;
+    background-color: rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+QCheckBox#modernToggle::indicator:checked {
+    background-color: #007AFF;
+    border: 1px solid #007AFF;
+}
+
+QCheckBox#modernToggle::indicator:hover {
+    background-color: rgba(0, 0, 0, 0.20);
+}
+
+QCheckBox#modernToggle::indicator:checked:hover {
+    background-color: #0056CC;
+    border: 1px solid #0056CC;
+}
+
+/* === МЕТКИ ВНУТРИ КНОПОК === */
+QLabel#colorDisplayLabel {
+    background: transparent;
+    border: none;
+}
+
+/* --- Диалог редактора цвета (СВЕТЛАЯ ТЕМА) --- */
+QDialog#colorEditorDialog {
+    background-color: #FDFDFD;
+}
+
+QDialog#colorEditorDialog QLabel {
+    /* Текст "Название:", "Цвет:" */
+    background-color: transparent; /* Явно указываем прозрачный фон */
+    color: #2D2D2D;
+    font-size: 11pt;
+    font-weight: 500;
+    padding-top: 4px;
+}
+
+QLineEdit#colorNameInput {
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 11pt;
+    color: #2D2D2D;
+}
+
+QLineEdit#colorNameInput:focus {
+    border: 1px solid #0078D7;
+}
+
+/* Стили для кнопок "Сохранить" и "Отмена" */
+QDialog#colorEditorDialog QDialogButtonBox QPushButton {
+    min-width: 90px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #EAEAEA;
+    color: #333333;
+    border: 1px solid #C0C0C0;
+}
+
+QDialog#colorEditorDialog QDialogButtonBox QPushButton:hover {
+    background-color: #DCDCDC;
+}
+
+/* Стиль для кнопки "Сохранить" (которая не является кнопкой "Отмена") */
+QDialog#colorEditorDialog QDialogButtonBox QPushButton:!cancel {
+    background-color: #0078D7;
+    color: #FFFFFF;
+    border: none;
+}
+
+QDialog#colorEditorDialog QDialogButtonBox QPushButton:!cancel:hover {
+    background-color: #0088F7;
+}
+
+QDialog#colorEditorDialog QDialogButtonBox QPushButton:disabled {
+    background-color: #F5F5F5;
+    color: #AAAAAA;
+    border: 1px solid #E0E0E0;
+}
+
+/* === Стили для кастомных слайдеров на канвасе (СВЕТЛАЯ ТЕМА) === */
+QScrollBar#themedScrollBar {
+    border: none;
+    background: rgba(0, 0, 0, 0.07); /* Слегка затемнённый полупрозрачный фон */
+    border-radius: 6px;
+}
+
+QScrollBar#themedScrollBar:vertical {
+    width: 12px;
+    margin: 0;
+}
+
+QScrollBar#themedScrollBar:horizontal {
+    height: 12px;
+    margin: 0;
+}
+
+/* СТИЛЬ ПОЛЗУНКА (HANDLE) */
+QScrollBar::handle#themedScrollBar {
+    background: #b0b0b0; /* Светло-серый ползунок */
+    border-radius: 5px;
+    min-height: 25px; /* Для вертикального */
+    min-width: 25px;  /* Для горизонтального */
+}
+
+QScrollBar::handle#themedScrollBar:hover {
+    background: #9a9a9a; /* Темнее при наведении */
+}
+
+QScrollBar::handle#themedScrollBar:pressed {
+    background: #007AFF; /* Синий цвет при нажатии, как и в темной теме */
+}
+
+/* СКРЫВАЕМ СТАНДАРТНЫЕ КНОПКИ-СТРЕЛКИ */
+QScrollBar::add-line, QScrollBar::sub-line {
+    border: none;
+    background: none;
+    width: 0px;
+    height: 0px;
+}
+
+/* СКРЫВАЕМ ПРОСТРАНСТВО ЗА ПОЛЗУНКОМ */
+QScrollBar::add-page, QScrollBar::sub-page {
+    background: none;
+}
+
+#reportPanel {
+    background-color: #f7f7f7;
+    border-left: 1px solid #e0e0e0;
+}
+
+/* --- Заголовок --- */
+#reportTotalColors {
+    font-size: 18px; /* Увеличено */
+    font-weight: 500;
+    color: #333;
+}
+
+#reportTotalRhinestones {
+    font-size: 17px; /* Увеличено */
+    color: #555;
+}
+
+/* --- Разделитель --- */
+#reportSeparator {
+    background-color: #e0e0e0;
+    height: 1px;
+    border: none;
+    margin: 4px 10px;
+}
+
+/* --- Сообщение о пустом отчете --- */
+#reportEmptyLabel {
+    color: #888;
+    font-size: 18px; /* Увеличено */
+    padding: 20px;
+}
+
+/* --- Элемент списка --- */
+#reportItem {
+    background-color: transparent;
+    border-radius: 6px;
+}
+
+#reportItem:hover {
+    background-color: #f0f0f0;
+}
+
+#reportItemName {
+    color: #212121;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+#reportItemStats {
+    color: #666666;
+    font-size: 16px;
+}
+
+/* --- Скролл-область --- */
+#reportScrollArea {
+    border: none;
+}
+
+QScrollBar:vertical {
+    border: none;
+    background: #f7f7f7;
+    width: 8px;
+    margin: 0px 0px 0px 0px;
+}
+QScrollBar::handle:vertical {
+    background: #c1c1c1;
+    min-height: 20px;
+    border-radius: 4px;
+}
+QScrollBar::handle:vertical:hover {
+    background: #a8a8a8;
+}
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    border: none;
+    background: none;
+}
+
+/* --- Общее окно --- */
+#lumoTraceDialog {
+    background-color: #f5f5f5;
+    border: 1px solid #dcdcdc;
+    color: #212121;
+    border-radius: 8px;
+}
+
+/* --- Заголовок --- */
+#lumoTraceDialogHeader {
+    background-color: transparent;
+    border-bottom: 1px solid #dcdcdc;
+    padding: 12px 15px;
+}
+#lumoTraceDialogTitle {
+    font-size: 20px;
+    font-weight: bold;
+    color: #212121;
+}
+
+/* --- Кнопка сброса --- */
+#lumoTraceResetButton {
+    background-color: #e0e0e0;
+    color: #333333;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+    font-size: 16px;
+}
+#lumoTraceResetButton:hover { background-color: #d5d5d5; }
+#lumoTraceResetButton:pressed { background-color: #c8c8c8; }
+
+/* --- Область прокрутки --- */
+#lumoTraceScrollArea, #lumoTraceScrollContent {
+    background: transparent;
+    border: none;
+}
+#lumoTraceDialog #lumoTraceScrollArea QScrollBar:vertical {
+    background-color: #f5f5f5;
+    width: 6px;
+}
+#lumoTraceDialog #lumoTraceScrollArea QScrollBar::handle:vertical {
+    background-color: #c1c1c1;
+    border-radius: 3px;
+}
+
+/* --- Группы эффектов --- */
+#lumoTraceDialog #lumoTraceColorsGroup,
+#lumoTraceDialog #lumoTraceBrightnessGroup,
+#lumoTraceDialog #lumoTraceContrastGroup,
+#lumoTraceDialog #lumoTraceSaturationGroup,
+#lumoTraceDialog #lumoTraceGammaGroup,
+#lumoTraceDialog #lumoTraceTemperatureGroup,
+#lumoTraceDialog #lumoTraceBlurGroup,
+#lumoTraceDialog #lumoTraceSharpenGroup,
+#lumoTraceDialog #lumoTraceInvertGroup {
+    background: transparent;
+    border: none;
+    padding: 4px 0;
+}
+
+/* --- Чекбоксы (заголовки групп) --- */
+#lumoTraceDialog QCheckBox {
+    color: #212121;
+    font-size: 18px;
+    font-weight: bold;
+    spacing: 14px;
+}
+#lumoTraceDialog QCheckBox::indicator {
+    width: 22px;
+    height: 22px;
+    border-radius: 5px;
+    border: 2px solid #b0b0b0;
+    background-color: #ffffff;
+}
+#lumoTraceDialog QCheckBox::indicator:hover {
+    border-color: #3498db;
+}
+#lumoTraceDialog QCheckBox::indicator:checked {
+    background-color: #3498db;
+    border-color: #3498db;
+}
+
+/* --- Слайдеры --- */
+#lumoTraceDialog #lumoTraceSliderTitle,
+#lumoTraceDialog #lumoTraceBlurTypeLabel {
+    color: #555555;
+    font-size: 16px;
+}
+#lumoTraceDialog #lumoTraceSliderValue {
+    color: #3498db;
+    font-size: 16px;
+    font-weight: bold;
+}
+#lumoTraceDialog QSlider::groove:horizontal {
+    border: none;
+    height: 10px;
+    background: #e0e0e0;
+    border-radius: 5px;
+}
+#lumoTraceDialog QSlider::handle:horizontal {
+    background: #3498db;
+    border: none;
+    width: 20px;
+    height: 20px;
+    margin: -5px 0;
+    border-radius: 10px;
+}
+#lumoTraceDialog #lumoTraceTemperatureSlider_control::groove:horizontal {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                               stop:0 #3498db, stop:0.5 #e0e0e0, stop:1 #e67e22);
+}
+
+/* --- Выпадающий список (Blur Type) --- */
+#lumoTraceDialog #lumoTraceBlurTypeCombo {
+    background-color: #ffffff;
+    color: #212121;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: 16px;
+}
+#lumoTraceDialog #lumoTraceBlurTypeCombo:hover {
+    border-color: #3498db;
+}
+#lumoTraceDialog #lumoTraceBlurTypeCombo QAbstractItemView {
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    color: #212121;
+}
+#lumoTraceDialog #lumoTraceBlurTypeCombo QAbstractItemView::item:selected {
+    background-color: #3498db;
+    color: #ffffff;
+}
+
+/* --- Нижняя панель с кнопками --- */
+#lumoTraceDialogButtons {
+    background: transparent;
+    border-top: 1px solid #dcdcdc;
+    padding: 12px 15px;
+}
+#lumoTraceDialog #lumoTraceEffectsInfo { color: #757575; }
+#lumoTraceDialog #lumoTraceCancelButton {
+    background-color: #e0e0e0;
+    color: #333333;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 18px;
+}
+#lumoTraceDialog #lumoTraceCancelButton:hover { background-color: #d5d5d5; }
+
+#lumoTraceDialog #lumoTraceApplyButton {
+    background-color: #3498db;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+#lumoTraceDialog #lumoTraceApplyButton:hover { background-color: #4ea8e1; }
+#lumoTraceDialog #lumoTraceApplyButton:pressed { background-color: #2a87c8; }
+
+/* Обновления */
+
+QDialog#updateDialog[theme="light"] {
+    background-color: #F0F0F0;
+}
+
+/* Заголовок - светлая тема */
+QFrame#updateDialogHeader[theme="light"] {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                stop:0 #FFFFFF, stop:1 #F5F5F5);
+    border: 1px solid #DCDCDC;
+}
+
+QLabel#updateDialogIcon[theme="light"] {
+    background-color: #4A90E2;
+    color: white;
+}
+
+QLabel#updateDialogTitle[theme="light"] {
+    color: #2D2D2D;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: transparent; /* <-- ИСПРАВЛЕНО */
+}
+
+QLabel#updateDialogSubtitle[theme="light"] {
+    color: #6A6A6A;
+    font-size: 16px;
+    background-color: transparent; /* <-- ИСПРАВЛЕНО */
+}
+
+/* Группы - светлая тема */
+QGroupBox#updateDialogVersionGroup[theme="light"],
+QGroupBox#updateDialogWhatsNewGroup[theme="light"],
+QGroupBox#updateDialogControlsGroup[theme="light"] {
+    border: 1px solid #DCDCDC;
+    background-color: #FAFAFA;
+}
+
+QGroupBox#updateDialogVersionGroup::title[theme="light"],
+QGroupBox#updateDialogWhatsNewGroup::title[theme="light"],
+QGroupBox#updateDialogControlsGroup::title[theme="light"] {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    left: 15px;
+    padding: 2px 10px;
+    background-color: #4A90E2;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 8px;
+    border: 1px solid #DCDCDC; /* Добавим рамку для гармонии */
+}
+
+/* Лейблы - светлая тема */
+QLabel#updateDialogVersionLabel[theme="light"] {
+    color: #2D2D2D;
+    font-size: 18px;          /* <-- ИЗМЕНЕНО */
+    font-weight: bold;
+    background-color: transparent; /* <-- ИСПРАВЛЕНО */
+}
+
+QLabel#updateDialogStatusLabel[theme="light"] {
+    color: #4A4A4A;
+    font-size: 16px;          /* <-- ИЗМЕНЕНО */
+    background-color: transparent; /* <-- ИСПРАВЛЕНО */
+}
+
+QLabel#updateDialogDetailsLabel[theme="light"] {
+    color: #6A6A6A;
+    font-size: 16px;          /* <-- ИЗМЕНЕНО */
+    background-color: transparent; /* <-- ИСПРАВЛЕНО */
+}
+
+/* Scroll Area - светлая тема */
+QScrollArea#updateDialogScrollArea[theme="light"] {
+    border: 1px solid #DCDCDC;
+    background-color: #FFFFFF;
+}
+
+QTextEdit#updateDialogReleaseNotes[theme="light"] {
+    background-color: #FFFFFF;
+    color: #2D2D2D;
+    font-size: 18px;          /* <-- ИЗМЕНЕНО */
+}
+
+QScrollArea#updateDialogScrollArea[theme="light"] QScrollBar:vertical {
+    background-color: #E0E0E0;
+}
+
+QScrollArea#updateDialogScrollArea[theme="light"] QScrollBar::handle:vertical {
+    background-color: #B0B0B0;
+}
+
+QScrollArea#updateDialogScrollArea[theme="light"] QScrollBar::handle:vertical:hover {
+    background-color: #A0A0A0;
+}
+
+/* Progress Bar - светлая тема */
+QProgressBar#updateDialogProgressBar[theme="light"] {
+    border: 1px solid #DCDCDC;
+    background-color: #FFFFFF;
+    color: #2D2D2D;
+    font-size: 16px;          /* <-- ИЗМЕНЕНО */
+    font-weight: bold;
+    text-align: center;
+}
+
+QProgressBar#updateDialogProgressBar[theme="light"]::chunk {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                stop:0 #4A90E2, stop:1 #357ABD);
+}
+
+/* Кнопки - светлая тема */
+QPushButton#updateDialogCheckButton[theme="light"],
+QPushButton#updateDialogInstallButton[theme="light"],
+QPushButton#updateDialogCloseButton[theme="light"] {
+    font-size: 16px;          /* <-- ИЗМЕНЕНО */
+    font-weight: bold;
+}
+
+
+QPushButton#updateDialogCheckButton[theme="light"] {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                stop:0 #FFFFFF, stop:1 #F0F0F0);
+    color: #2D2D2D;
+    border: 1px solid #DCDCDC;
+}
+
+QPushButton#updateDialogCheckButton[theme="light"]:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                stop:0 #F8F8F8, stop:1 #E8E8E8);
+    border-color: #CACACA;
+}
+
+QPushButton#updateDialogInstallButton[theme="light"] {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                stop:0 #4A90E2, stop:1 #357ABD);
+    color: white;
+    border: 1px solid #357ABD; /* Добавил рамку для консистентности */
+}
+
+QPushButton#updateDialogInstallButton[theme="light"]:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                stop:0 #5BA0F2, stop:1 #458ACD);
+}
+
+QPushButton#updateDialogCloseButton[theme="light"] {
+    background-color: #E0E0E0;
+    color: #2D2D2D;
+    border: 1px solid #DCDCDC;
+}
+
+QPushButton#updateDialogCloseButton[theme="light"]:hover {
+    background-color: #D0D0D0;
+    border-color: #CACACA;
+}

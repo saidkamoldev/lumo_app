@@ -1,0 +1,5 @@
+/resources/fonts/*
+/main.build/
+/main.dist/
+/main.onefile-build/
+/Output/

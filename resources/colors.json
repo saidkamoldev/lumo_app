@@ -1,0 +1,690 @@
+[
+    {
+        "name": "Crystal",
+        "color": {
+            "r": 255,
+            "g": 255,
+            "b": 255
+        }
+    },
+    {
+        "name": "White Opal",
+        "color": {
+            "r": 245,
+            "g": 245,
+            "b": 245
+        }
+    },
+    {
+        "name": "White Alabaster",
+        "color": {
+            "r": 240,
+            "g": 240,
+            "b": 240
+        }
+    },
+    {
+        "name": "Rose Water Opal",
+        "color": {
+            "r": 255,
+            "g": 182,
+            "b": 193
+        }
+    },
+    {
+        "name": "Vintage Rose",
+        "color": {
+            "r": 205,
+            "g": 133,
+            "b": 161
+        }
+    },
+    {
+        "name": "Light Rose",
+        "color": {
+            "r": 255,
+            "g": 182,
+            "b": 193
+        }
+    },
+    {
+        "name": "Rose",
+        "color": {
+            "r": 255,
+            "g": 105,
+            "b": 180
+        }
+    },
+    {
+        "name": "Indian Pink",
+        "color": {
+            "r": 255,
+            "g": 92,
+            "b": 142
+        }
+    },
+    {
+        "name": "Fuchsia",
+        "color": {
+            "r": 255,
+            "g": 0,
+            "b": 255
+        }
+    },
+    {
+        "name": "Ruby",
+        "color": {
+            "r": 224,
+            "g": 17,
+            "b": 95
+        }
+    },
+    {
+        "name": "Padparadscha",
+        "color": {
+            "r": 255,
+            "g": 153,
+            "b": 102
+        }
+    },
+    {
+        "name": "Sun",
+        "color": {
+            "r": 255,
+            "g": 223,
+            "b": 0
+        }
+    },
+    {
+        "name": "Fireopal",
+        "color": {
+            "r": 255,
+            "g": 69,
+            "b": 0
+        }
+    },
+    {
+        "name": "Hyacinth",
+        "color": {
+            "r": 255,
+            "g": 127,
+            "b": 80
+        }
+    },
+    {
+        "name": "Light Siam",
+        "color": {
+            "r": 255,
+            "g": 102,
+            "b": 102
+        }
+    },
+    {
+        "name": "Dark Red Coral",
+        "color": {
+            "r": 139,
+            "g": 0,
+            "b": 0
+        }
+    },
+    {
+        "name": "Siam",
+        "color": {
+            "r": 128,
+            "g": 0,
+            "b": 0
+        }
+    },
+    {
+        "name": "Garnet",
+        "color": {
+            "r": 115,
+            "g": 54,
+            "b": 53
+        }
+    },
+    {
+        "name": "Burgundy",
+        "color": {
+            "r": 128,
+            "g": 0,
+            "b": 32
+        }
+    },
+    {
+        "name": "Light Amethyst",
+        "color": {
+            "r": 216,
+            "g": 191,
+            "b": 216
+        }
+    },
+    {
+        "name": "Violet",
+        "color": {
+            "r": 238,
+            "g": 130,
+            "b": 238
+        }
+    },
+    {
+        "name": "Tanzanite",
+        "color": {
+            "r": 92,
+            "g": 45,
+            "b": 145
+        }
+    },
+    {
+        "name": "Cyclamen Opal",
+        "color": {
+            "r": 219,
+            "g": 112,
+            "b": 219
+        }
+    },
+    {
+        "name": "Amethyst",
+        "color": {
+            "r": 153,
+            "g": 102,
+            "b": 204
+        }
+    },
+    {
+        "name": "Purple Velvet",
+        "color": {
+            "r": 138,
+            "g": 43,
+            "b": 226
+        }
+    },
+    {
+        "name": "Dark Indigo",
+        "color": {
+            "r": 49,
+            "g": 0,
+            "b": 98
+        }
+    },
+    {
+        "name": "Montana",
+        "color": {
+            "r": 54,
+            "g": 69,
+            "b": 107
+        }
+    },
+    {
+        "name": "Capri Blue",
+        "color": {
+            "r": 0,
+            "g": 191,
+            "b": 255
+        }
+    },
+    {
+        "name": "Sapphire",
+        "color": {
+            "r": 15,
+            "g": 82,
+            "b": 186
+        }
+    },
+    {
+        "name": "Light Sapphire",
+        "color": {
+            "r": 173,
+            "g": 216,
+            "b": 230
+        }
+    },
+    {
+        "name": "Air Blue Opal",
+        "color": {
+            "r": 176,
+            "g": 224,
+            "b": 230
+        }
+    },
+    {
+        "name": "Aquamarine",
+        "color": {
+            "r": 127,
+            "g": 255,
+            "b": 212
+        }
+    },
+    {
+        "name": "Light Azore",
+        "color": {
+            "r": 173,
+            "g": 216,
+            "b": 230
+        }
+    },
+    {
+        "name": "Indian Sapphire",
+        "color": {
+            "r": 72,
+            "g": 209,
+            "b": 204
+        }
+    },
+    {
+        "name": "Pacific Opal",
+        "color": {
+            "r": 127,
+            "g": 255,
+            "b": 212
+        }
+    },
+    {
+        "name": "Mint Alabaster",
+        "color": {
+            "r": 189,
+            "g": 252,
+            "b": 201
+        }
+    },
+    {
+        "name": "Turquoise",
+        "color": {
+            "r": 64,
+            "g": 224,
+            "b": 208
+        }
+    },
+    {
+        "name": "Indicolite",
+        "color": {
+            "r": 70,
+            "g": 130,
+            "b": 180
+        }
+    },
+    {
+        "name": "Caribbean Blue Opal",
+        "color": {
+            "r": 67,
+            "g": 206,
+            "b": 162
+        }
+    },
+    {
+        "name": "Blue Zircon",
+        "color": {
+            "r": 21,
+            "g": 96,
+            "b": 189
+        }
+    },
+    {
+        "name": "Chrysolite",
+        "color": {
+            "r": 126,
+            "g": 255,
+            "b": 119
+        }
+    },
+    {
+        "name": "Peridot",
+        "color": {
+            "r": 170,
+            "g": 205,
+            "b": 102
+        }
+    },
+    {
+        "name": "Erinite",
+        "color": {
+            "r": 143,
+            "g": 188,
+            "b": 143
+        }
+    },
+    {
+        "name": "Emerald",
+        "color": {
+            "r": 80,
+            "g": 200,
+            "b": 120
+        }
+    },
+    {
+        "name": "Palace Green Opal",
+        "color": {
+            "r": 0,
+            "g": 128,
+            "b": 0
+        }
+    },
+    {
+        "name": "Olivine",
+        "color": {
+            "r": 107,
+            "g": 142,
+            "b": 35
+        }
+    },
+    {
+        "name": "Khaki",
+        "color": {
+            "r": 240,
+            "g": 230,
+            "b": 140
+        }
+    },
+    {
+        "name": "Lime",
+        "color": {
+            "r": 0,
+            "g": 255,
+            "b": 0
+        }
+    },
+    {
+        "name": "Light Topaz",
+        "color": {
+            "r": 255,
+            "g": 239,
+            "b": 213
+        }
+    },
+    {
+        "name": "Jonquil",
+        "color": {
+            "r": 244,
+            "g": 232,
+            "b": 104
+        }
+    },
+    {
+        "name": "Silk",
+        "color": {
+            "r": 255,
+            "g": 255,
+            "b": 240
+        }
+    },
+    {
+        "name": "Light Peach",
+        "color": {
+            "r": 255,
+            "g": 218,
+            "b": 185
+        }
+    },
+    {
+        "name": "Light Colorado Topaz",
+        "color": {
+            "r": 210,
+            "g": 180,
+            "b": 140
+        }
+    },
+    {
+        "name": "Topaz",
+        "color": {
+            "r": 255,
+            "g": 200,
+            "b": 87
+        }
+    },
+    {
+        "name": "Light Smoked Topaz",
+        "color": {
+            "r": 205,
+            "g": 133,
+            "b": 63
+        }
+    },
+    {
+        "name": "Smoked Topaz",
+        "color": {
+            "r": 139,
+            "g": 69,
+            "b": 19
+        }
+    },
+    {
+        "name": "Mocha",
+        "color": {
+            "r": 111,
+            "g": 78,
+            "b": 55
+        }
+    },
+    {
+        "name": "Smoky Quartz",
+        "color": {
+            "r": 105,
+            "g": 105,
+            "b": 105
+        }
+    },
+    {
+        "name": "Sand Opal",
+        "color": {
+            "r": 210,
+            "g": 180,
+            "b": 140
+        }
+    },
+    {
+        "name": "Light Grey Opal",
+        "color": {
+            "r": 211,
+            "g": 211,
+            "b": 211
+        }
+    },
+    {
+        "name": "Greige",
+        "color": {
+            "r": 169,
+            "g": 169,
+            "b": 169
+        }
+    },
+    {
+        "name": "Black Diamond",
+        "color": {
+            "r": 50,
+            "g": 50,
+            "b": 50
+        }
+    },
+    {
+        "name": "Jet",
+        "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+        }
+    },
+    {
+        "name": "Crystal Moonlight",
+        "color": {
+            "r": 240,
+            "g": 248,
+            "b": 255
+        }
+    },
+    {
+        "name": "Crystal Silver Shade",
+        "color": {
+            "r": 192,
+            "g": 192,
+            "b": 192
+        }
+    },
+    {
+        "name": "Crystal Golden Shadow",
+        "color": {
+            "r": 255,
+            "g": 223,
+            "b": 0
+        }
+    },
+    {
+        "name": "Crystal Copper",
+        "color": {
+            "r": 184,
+            "g": 115,
+            "b": 51
+        }
+    },
+    {
+        "name": "Crystal Red Magma",
+        "color": {
+            "r": 220,
+            "g": 20,
+            "b": 60
+        }
+    },
+    {
+        "name": "Crystal Argent Light",
+        "color": {
+            "r": 255,
+            "g": 255,
+            "b": 224
+        }
+    },
+    {
+        "name": "Crystal Bermuda Blue",
+        "color": {
+            "r": 0,
+            "g": 149,
+            "b": 182
+        }
+    },
+    {
+        "name": "Crystal Heliotrope",
+        "color": {
+            "r": 108,
+            "g": 73,
+            "b": 190
+        }
+    },
+    {
+        "name": "Crystal Metallic Blue",
+        "color": {
+            "r": 25,
+            "g": 25,
+            "b": 112
+        }
+    },
+    {
+        "name": "Crystal Vitrail Light",
+        "color": {
+            "r": 255,
+            "g": 182,
+            "b": 193
+        }
+    },
+    {
+        "name": "Crystal Vitrail Medium",
+        "color": {
+            "r": 205,
+            "g": 133,
+            "b": 161
+        }
+    },
+    {
+        "name": "Crystal Sage",
+        "color": {
+            "r": 143,
+            "g": 188,
+            "b": 143
+        }
+    },
+    {
+        "name": "Crystal Sahara",
+        "color": {
+            "r": 255,
+            "g": 215,
+            "b": 0
+        }
+    },
+    {
+        "name": "Crystal Tabac",
+        "color": {
+            "r": 139,
+            "g": 69,
+            "b": 19
+        }
+    },
+    {
+        "name": "Crystal Volcano",
+        "color": {
+            "r": 255,
+            "g": 69,
+            "b": 0
+        }
+    },
+    {
+        "name": "Crystal Dorado",
+        "color": {
+            "r": 184,
+            "g": 134,
+            "b": 11
+        }
+    },
+    {
+        "name": "Crystal Metallic Light Gold",
+        "color": {
+            "r": 255,
+            "g": 215,
+            "b": 0
+        }
+    },
+    {
+        "name": "Jet Nut",
+        "color": {
+            "r": 50,
+            "g": 50,
+            "b": 50
+        }
+    },
+    {
+        "name": "Jet Hematite",
+        "color": {
+            "r": 30,
+            "g": 30,
+            "b": 50
+        }
+    },
+    {
+        "name": "Crystal Aurora Boreale",
+        "color": {
+            "r": 238,
+            "g": 130,
+            "b": 238
+        }
+    },
+    {
+        "name": "Crystal Transmission",
+        "color": {
+            "r": 224,
+            "g": 255,
+            "b": 255
+        }
+    },
+    {
+        "name": "Crystal Satin",
+        "color": {
+            "r": 255,
+            "g": 239,
+            "b": 213
+        }
+    },
+    {
+        "name": "Crystal Matt Finish",
+        "color": {
+            "r": 169,
+            "g": 169,
+            "b": 169
+        }
+    }
+]
