@@ -125,6 +125,8 @@ def main():
 
         settings_panel.processClicked.connect(presenter.process_image)
         settings_panel.mirrorClicked.connect(presenter.mirror_image)
+        app.aboutToQuit.connect(presenter.cleanup)
+
 
         # --- 5. Запуск приложения ---
         main_window.show()

@@ -885,6 +885,43 @@ class MainPresenter(QObject):
             self._preview_worker = None
 
     def _cleanup_final_trace_thread(self):
+        """Очищает поток финальной трассировки."""
+        if hasattr(self, '_final_trace_thread') and self._final_trace_thread:
+            if self._final_trace_thread.isRunning():
+                self._final_trace_thread.quit()
+                self._final_trace_thread.wait(2000)
+            self._final_trace_thread = None
+            self._final_trace_worker = None
+
+    def cleanup(self):
+        """
+        Главный метод очистки — вызывается при закрытии приложения.
+        Останавливает все активные потоки чтобы избежать краша.
+        """
+        print("MainPresenter: начало очистки ресурсов...")
+
+        # 1. Останавливаем все trace потоки
+        self._stop_current_trace_processing()
+
+        # 2. Останавливаем export поток
+        if self.export_thread and self.export_thread.isRunning():
+            self.export_thread.quit()
+            self.export_thread.wait(2000)
+            self.export_thread = None
+            self.export_worker = None
+
+        # 3. Закрываем открытые диалоги
+        if self._trace_dialog:
+            self._trace_dialog.close()
+            self._trace_dialog = None
+
+        if self._settings_dialog:
+            self._settings_dialog.close()
+            self._settings_dialog = None
+
+        print("MainPresenter: очистка завершена.")
+
+    def _cleanup_final_trace_thread(self):
         if hasattr(self, '_final_trace_thread') and self._final_trace_thread:
             if self._final_trace_thread.isRunning():
                 self._final_trace_thread.quit()
