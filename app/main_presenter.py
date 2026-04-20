@@ -210,6 +210,73 @@ class MainPresenter(QObject):
 
         if not success:
             self.view.show_error("Ошибка обновления", message)
+    
+    def _extract_dominant_colors_from_image(self, image, max_colors: int) -> list:
+    """
+    Трассировka qilingan rasmdan dominant ranglarni topadi
+    va ularni palitradagi eng yaqin ranglarga moslashtiradi.
+    Natijada faqat shu ranglar razkладkада ishlatiladi.
+    """
+    try:
+        import numpy as np
+        # Rasmni kichraytirish — tezlik uchun
+        small = image.resize((100, 100))
+        pixels = np.array(small).reshape(-1, 3)
+
+        # Noyob ranglarni topish (oq fon [250+] ni o'tkazib yuborish)
+        non_white = pixels[~np.all(pixels >= 250, axis=1)]
+        if len(non_white) == 0:
+            return None
+
+        # K-means orqali dominant ranglarni topish
+        from sklearn.cluster import KMeans
+        n_clusters = min(max_colors, len(non_white), 20)
+        if n_clusters < 1:
+            return None
+
+        kmeans = KMeans(n_clusters=n_clusters, random_state=42, n_init=3)
+        kmeans.fit(non_white)
+        centers = kmeans.cluster_centers_.astype(int)
+
+        # Har bir dominant rangni palitradagi eng yaqin rangga moslashtirish
+        matched_color_names = []
+        full_palette = self.palette_service.get_palette()
+
+        for center in centers:
+            from core.models import RGBColor
+            center_color = RGBColor(int(center[0]), int(center[1]), int(center[2]))
+            nearest = self.palette_service.find_nearest(center_color, None)
+            if nearest and nearest.name not in matched_color_names:
+                matched_color_names.append(nearest.name)
+
+        return matched_color_names if matched_color_names else None
+
+    except ImportError:
+        # sklearn yo'q bo'lsa, oddiy usul: eng ko'p uchragan ranglar
+        try:
+            quantized = image.quantize(colors=max_colors, method=0, dither=0)
+            rgb_img = quantized.convert('RGB')
+            palette_raw = quantized.getpalette()
+            
+            matched_color_names = []
+            for i in range(max_colors):
+                r = palette_raw[i * 3]
+                g = palette_raw[i * 3 + 1]
+                b = palette_raw[i * 3 + 2]
+                if r >= 250 and g >= 250 and b >= 250:
+                    continue  # oq fon
+                from core.models import RGBColor
+                color = RGBColor(r, g, b)
+                nearest = self.palette_service.find_nearest(color, None)
+                if nearest and nearest.name not in matched_color_names:
+                    matched_color_names.append(nearest.name)
+            
+            return matched_color_names if matched_color_names else None
+        except Exception:
+            return None
+    except Exception as e:
+        print(f"Ошибка при извлечении цветов трассировки: {e}")
+        return None
 
     # --- Операции с изображением ---
 
@@ -947,9 +1014,19 @@ class MainPresenter(QObject):
     def _on_final_trace_ready(self, final_image):
         """Обрабатывает готовое финальное изображение после трассировки."""
         self.view.hide_progress()
-
         if final_image:
             self._image_state_manager.apply_trace(final_image)
+
+            # ✅ FIX: Трассировka natijasida hosil bo'lgan ranglarni
+            #         allowed_colors sifatida o'rnatamiz
+            if self._last_trace_params and self._last_trace_params.colors_enabled:
+                trace_colors = self._extract_dominant_colors_from_image(
+                    final_image,
+                    self._last_trace_params.colors
+                )
+                if trace_colors:
+                    self._allowed_colors = trace_colors
+
             processing_settings = self.view.get_processing_settings()
             self.view.display_image(
                 final_image,
@@ -961,13 +1038,17 @@ class MainPresenter(QObject):
             self.view.set_export_button_enabled(False)
         else:
             self.view.show_error("Ошибка", "Не удалось применить трассировку.")
-
         self._cleanup_final_trace_thread()
 
     def _on_trace_cancelled(self):
         """Отменяет трассировку и восстанавливает оригинальное изображение."""
         self._stop_current_trace_processing()
         self._trace_cache.clear()
+
+        # ✅ FIX: Bekor qilinganda trace ranglarini tozalaymiz
+        # (faqat agar trace orqali o'rnatilgan bo'lsa)
+        # _allowed_colors ni reset qilmaymiz — foydalanuvchi qo'lda o'rnatgan
+        # bo'lishi mumkin. Faqat trace flag bilan belgilangan bo'lsa tozalaymiz.
 
         original_image = self._image_state_manager.get_original_image()
         if original_image:
@@ -978,8 +1059,7 @@ class MainPresenter(QObject):
                 processing_settings.output if processing_settings else None,
                 preserve_view=True
             )
-            if hasattr(self.trace_processor, 'reset'): self.trace_processor.reset()
-
+        if hasattr(self.trace_processor, 'reset'): self.trace_processor.reset()
         if self._trace_dialog:
             self._trace_dialog.close()
             self._trace_dialog = None
