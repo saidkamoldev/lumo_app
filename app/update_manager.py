@@ -198,6 +198,8 @@ class UpdateManager(QObject):
         self._thread.started.connect(self._worker.run)
         self._worker.finished.connect(self._on_update_finished)
         self._worker.progress.connect(self.update_progress.emit)
+        self._worker.finished.connect(self._thread.quit)
+        self._thread.finished.connect(self._thread.deleteLater)
 
         self._thread.start()
 
