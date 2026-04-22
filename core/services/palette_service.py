@@ -130,6 +130,21 @@ class PaletteService:
         except IOError:
             pass
 
+    def save_palette(self, palette: List[PaletteColor]):
+        """Сохраняет палитру (List[PaletteColor]) в JSON файл."""
+        self._palette = palette
+        palette_data = []
+        for p_color in self._palette:
+            palette_data.append({
+                'name': p_color.name,
+                'color': {
+                    'r': p_color.color.r,
+                    'g': p_color.color.g,
+                    'b': p_color.color.b
+                }
+            })
+        self.save_palette_data(palette_data)    
+
     def get_palette(self) -> List[PaletteColor]:
         if not self._palette:
             self.load_palette()
