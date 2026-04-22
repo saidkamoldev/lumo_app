@@ -601,7 +601,7 @@ class MainPresenter(QObject):
         self._allowed_sizes = size_names if size_names else None
 
     # --- Экспорт ---
-
+# task done_3
     def export_project(self):
         if not self._project:
             self.view.show_error("Ошибка", "Нет проекта для экспорта.")
