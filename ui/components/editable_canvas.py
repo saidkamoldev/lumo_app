@@ -249,6 +249,24 @@ class EditableCanvas(BaseCanvas):
             self._add_rhinestone_at_position(event.pos())
             return
 
+        # ИСПРАВЛЕНИЕ: Alt+drag — дублирование выделенных стразов
+        print(f"[DEBUG] mousePressEvent: modifiers={event.modifiers()}, Alt={bool(event.modifiers() & Qt.AltModifier)}")
+        if (event.button() == Qt.LeftButton and
+                event.modifiers() & Qt.AltModifier):
+            super().mousePressEvent(event)
+            self._alt_drag_active = True
+            self._alt_drag_originals = self.get_selected_indices()[:]
+            # Сразу запоминаем позиции БЕЗ задержки
+            self._move_start_positions.clear()
+            self._any_item_moved = False
+            for idx in self._alt_drag_originals:
+                if idx < len(self._rhinestone_items):
+                    item = self._rhinestone_items[idx]
+                    pos = item.pos()
+                    self._move_start_positions[idx] = Point(pos.x(), pos.y())
+            print(f"[DEBUG] Alt+drag boshlandi! originals={self._alt_drag_originals}, positions={self._move_start_positions}")
+            return
+
         super().mousePressEvent(event)
 
         if event.button() == Qt.LeftButton:
@@ -273,6 +291,9 @@ class EditableCanvas(BaseCanvas):
 
     def _finalize_move_command(self):
         """Создает команду перемещения после завершения операции."""
+        # Alt+drag режимида positions ni tozalamaslik kerak
+        if getattr(self, '_alt_drag_active', False):
+            return
         if not self._any_item_moved or not self._move_start_positions:
             return
 
@@ -299,6 +320,17 @@ class EditableCanvas(BaseCanvas):
         if self._space_pressed and event.button() == Qt.LeftButton:
             super().mouseReleaseEvent(event)
             return
+
+        # ИСПРАВЛЕНИЕ: Alt+drag завершён — создаём дубликаты
+        if (event.button() == Qt.LeftButton and
+                getattr(self, '_alt_drag_active', False)):
+            self._alt_drag_active = False
+            print(f"[DEBUG] mouseReleaseEvent: Alt+drag tugadi, positions={self._move_start_positions}, originals={getattr(self, '_alt_drag_originals', [])}")
+            self._finish_alt_drag_duplicate()
+            return
+
+        # Обычный drag — только перемещение, без дублирования
+        self._alt_drag_active = False
         super().mouseReleaseEvent(event)
 
     def _is_significant_move(self, old_pos: Point, new_pos: Point) -> bool:
@@ -364,6 +396,67 @@ class EditableCanvas(BaseCanvas):
             self._full_rebuild_scene(preserve_selection=new_indices_to_select)
             self._update_project_report()
             self.projectModified.emit(self._project)
+
+
+    def _finish_alt_drag_duplicate(self):
+        """Alt+drag: original joyida qoladi, nusxa yangi joyda paydo bo'ladi."""
+        if not self._project or not self._output_settings:
+            return
+
+        orig_indices = getattr(self, '_alt_drag_originals', [])
+        if not orig_indices:
+            return
+
+        duplicates = []
+        items_to_restore = []
+
+        for orig_idx in orig_indices:
+            if orig_idx >= len(self._rhinestone_items):
+                continue
+            item = self._rhinestone_items[orig_idx]
+            old_pos = self._move_start_positions.get(orig_idx)
+            if old_pos is None:
+                continue
+            current_pos = Point(item.pos().x(), item.pos().y())
+            if not self._is_significant_move(old_pos, current_pos):
+                continue
+            original_rhinestone = self._project.rhinestones[orig_idx]
+            duplicate = Rhinestone(
+                position=current_pos,
+                color=original_rhinestone.color,
+                size=original_rhinestone.size
+            )
+            duplicates.append(duplicate)
+            items_to_restore.append((orig_idx, item, old_pos, original_rhinestone))
+
+        if not duplicates:
+            self._move_start_positions.clear()
+            self._any_item_moved = False
+            self._alt_drag_originals = []
+            return
+
+        self._scene.blockSignals(True)
+        for orig_idx, item, old_pos, original_rhinestone in items_to_restore:
+            item.setPos(old_pos.x, old_pos.y)
+            self._project.rhinestones[orig_idx] = Rhinestone(
+                position=old_pos,
+                color=original_rhinestone.color,
+                size=original_rhinestone.size
+            )
+            item.rhinestone = self._project.rhinestones[orig_idx]
+        self._scene.blockSignals(False)
+
+        command = AddRhinestonesCommand(self._project, duplicates)
+        self.command_manager.execute_command(command)
+        self._add_new_items_only()
+        self._scene.update()
+        self.viewport().update()
+        self._update_project_report()
+        self.projectModified.emit(self._project)
+
+        self._move_start_positions.clear()
+        self._any_item_moved = False
+        self._alt_drag_originals = []
 
     def _delete_selected(self):
         """

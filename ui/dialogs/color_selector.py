@@ -23,6 +23,10 @@ class ColorEditorDialog(QDialog):
         self.setWindowTitle(title)
         self.setObjectName("colorEditorDialog")
         self.setMinimumWidth(380)
+        # Alt+drag состояние
+        self._alt_drag_active = False
+        self._alt_drag_start_pos = None
+        self._alt_drag_originals = []
 
         self.existing_names = [name.lower() for name in existing_names]
         self.original_name = ""
@@ -167,7 +171,11 @@ class ColorItem(QFrame):
         if event.button() == Qt.LeftButton:
             if not self.edit_button.geometry().contains(event.pos()):
                 self.clicked.emit(self.palette_color.name)
+
         super().mousePressEvent(event)
+
+        if event.button() == Qt.LeftButton:
+            QTimer.singleShot(1, self._start_move_tracking)
 
 
 class ColorSelectorPopup(QFrame):
@@ -389,6 +397,79 @@ class ColorSelectorPopup(QFrame):
                 self._populate_colors()
                 self.selected_colors.add(new_color_data.name)
                 self._update_selection_state()
+
+    def _finish_alt_drag_duplicate(self):
+        """
+        Alt+drag завершён: оригиналы возвращаются на место,
+        копии добавляются на новые позиции.
+        """
+        if not self._project or not self._output_settings:
+            return
+
+        orig_indices = getattr(self, '_alt_drag_originals', [])
+        if not orig_indices:
+            return
+
+        duplicates = []
+        items_to_restore = []
+
+        for orig_idx in orig_indices:
+            if orig_idx >= len(self._rhinestone_items):
+                continue
+
+            item = self._rhinestone_items[orig_idx]
+            old_pos = self._move_start_positions.get(orig_idx)
+            if old_pos is None:
+                continue
+
+            current_pos = Point(item.pos().x(), item.pos().y())
+
+            if not self._is_significant_move(old_pos, current_pos):
+                continue
+
+            original_rhinestone = self._project.rhinestones[orig_idx]
+
+            duplicate = Rhinestone(
+                position=current_pos,
+                color=original_rhinestone.color,
+                size=original_rhinestone.size
+            )
+            duplicates.append(duplicate)
+            items_to_restore.append((orig_idx, item, old_pos, original_rhinestone))
+
+        if not duplicates:
+            self._move_start_positions.clear()
+            self._any_item_moved = False
+            self._alt_drag_originals = []
+            return
+
+        # Возвращаем оригиналы на место
+        self._scene.blockSignals(True)
+        for orig_idx, item, old_pos, original_rhinestone in items_to_restore:
+            item.setPos(old_pos.x, old_pos.y)
+            self._project.rhinestones[orig_idx] = Rhinestone(
+                position=old_pos,
+                color=original_rhinestone.color,
+                size=original_rhinestone.size
+            )
+            item.rhinestone = self._project.rhinestones[orig_idx]
+        self._scene.blockSignals(False)
+
+        # Добавляем дубликаты
+        command = AddRhinestonesCommand(self._project, duplicates)
+        self.command_manager.execute_command(command)
+
+        self._add_new_items_only()
+        self._scene.update()
+        self.viewport().update()
+        self._update_project_report()
+        self.projectModified.emit(self._project)
+
+        self._move_start_positions.clear()
+        self._any_item_moved = False
+        self._alt_drag_originals = []
+
+
 
     def _delete_selected_colors(self):
         if not self.selected_colors: return
