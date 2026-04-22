@@ -50,29 +50,42 @@ class FontDelegate(QStyledItemDelegate):
     def __init__(self, text_service, parent=None):
         super().__init__(parent)
         self.text_service = text_service
+        self._font_cache = {}  # Kesh qo'shamiz
 
     def paint(self, painter, option, index):
         font_name = index.data()
-        font_path = self.text_service.get_font_path(font_name)
 
-        if font_path:
-            font_id = QFontDatabase.addApplicationFont(font_path)
-            if font_id != -1:
-                family = QFontDatabase.applicationFontFamilies(font_id)[0]
-                qt_font = QFont(family, 12)
+        # Keshdan olish yoki yuklash
+        if font_name not in self._font_cache:
+            font_path = self.text_service.get_font_path(font_name)
+            if font_path:
+                font_id = QFontDatabase.addApplicationFont(font_path)
+                if font_id != -1:
+                    families = QFontDatabase.applicationFontFamilies(font_id)
+                    if families:
+                        self._font_cache[font_name] = QFont(families[0], 12)
+                    else:
+                        self._font_cache[font_name] = QFont()
+                else:
+                    self._font_cache[font_name] = QFont()
             else:
-                qt_font = QFont()
-        else:
-            qt_font = QFont(font_name, 12)
+                self._font_cache[font_name] = QFont(font_name, 12)
+
+        qt_font = self._font_cache[font_name]
 
         painter.save()
-
         if option.state & QStyle.State_Selected:
             painter.fillRect(option.rect, option.palette.highlight())
             painter.setPen(option.palette.highlightedText().color())
+        else:
+            painter.setPen(option.palette.text().color())
 
         painter.setFont(qt_font)
-        painter.drawText(option.rect.adjusted(5, 0, 0, 0), Qt.AlignVCenter | Qt.AlignLeft, font_name)
+        painter.drawText(
+            option.rect.adjusted(5, 0, 0, 0),
+            Qt.AlignVCenter | Qt.AlignLeft,
+            font_name
+        )
         painter.restore()
 
     def sizeHint(self, option, index):

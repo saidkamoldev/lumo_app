@@ -14,15 +14,38 @@ class TextImageService:
         self._font_files = self._scan_fonts_directory()
 
     def _scan_fonts_directory(self) -> Dict[str, str]:
+        found_fonts = {}
+
+        # 1. resources/fonts papkasini tekshir
         fonts_dir = "resources/fonts"
         if not os.path.exists(fonts_dir):
             os.makedirs(fonts_dir)
-            return {}
-        found_fonts = {}
+
         for file in os.listdir(fonts_dir):
             if file.lower().endswith(('.ttf', '.otf')):
                 font_name = os.path.splitext(file)[0]
                 found_fonts[font_name] = os.path.join(fonts_dir, file)
+
+        # 2. Tizim shriftlarini ham qo'sh (Linux/Windows/Mac)
+        system_font_dirs = [
+            "/usr/share/fonts",           # Linux
+            "/usr/local/share/fonts",     # Linux
+            os.path.expanduser("~/.fonts"),  # Linux user fonts
+            "C:/Windows/Fonts",           # Windows
+            "/System/Library/Fonts",      # macOS
+            "/Library/Fonts",             # macOS
+        ]
+
+        for sys_dir in system_font_dirs:
+            if os.path.exists(sys_dir):
+                for root, dirs, files in os.walk(sys_dir):
+                    for file in files:
+                        if file.lower().endswith(('.ttf', '.otf')):
+                            font_name = os.path.splitext(file)[0]
+                            # resources/fonts dagi fontlar ustunlik qiladi
+                            if font_name not in found_fonts:
+                                found_fonts[font_name] = os.path.join(root, file)
+
         return found_fonts
 
     def get_available_fonts(self) -> List[str]:
@@ -140,21 +163,32 @@ class TextImageService:
         line_heights = []
         line_widths = []
 
-        try:
-            # Получаем высоту строки из метрик шрифта
-            _, top, _, bottom = font.getbbox("A")
-            line_height = bottom - top
-        except AttributeError:  # Fallback для старых версий Pillow
-            line_height = font.getsize("A")[1]
-
         for line in lines:
-            # Ширина строки = сумма ширин символов + интервалы
-            line_width = sum(font.getlength(char) for char in line)
-            if len(line) > 1:
-                line_width += (len(line) - 1) * spacing
+            if line.strip():
+                # Har bir satr uchun haqiqiy balandlikni hisoblash
+                try:
+                    bbox = font.getbbox(line)
+                    line_height = bbox[3] - bbox[1]
+                except AttributeError:
+                    line_height = font.getsize(line)[1]
+            else:
+                # Bo'sh satr uchun "A" harfi balandligini ishlatamiz
+                try:
+                    _, top, _, bottom = font.getbbox("A")
+                    line_height = bottom - top
+                except AttributeError:
+                    line_height = font.getsize("A")[1]
 
-            line_widths.append(line_width)
-            line_heights.append(line_height)
+            # Satr kengligi
+            if line.strip():
+                line_width = sum(font.getlength(char) for char in line)
+                if len(line) > 1:
+                    line_width += (len(line) - 1) * spacing
+            else:
+                line_width = 0
+
+            line_widths.append(int(line_width))
+            line_heights.append(int(line_height * 1.2))  # 1.2 — satrlar orasiga bo'sh joy
 
         return line_heights, line_widths
 
