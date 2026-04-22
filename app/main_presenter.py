@@ -770,10 +770,12 @@ class MainPresenter(QObject):
         self._preview_thread.start()
 
     def _on_trace_preview_ready(self, preview_image, params_key):
+        """Отображает готовое превью трассировки."""
         if preview_image:
             if len(self._trace_cache) >= 5:
                 del self._trace_cache[next(iter(self._trace_cache))]
             self._trace_cache[params_key] = preview_image.copy()
+
             processing_settings = self.view.get_processing_settings()
             self.view.display_image(
                 preview_image,
@@ -782,8 +784,11 @@ class MainPresenter(QObject):
             )
             if self._current_view_transform:
                 self.view.photo_viewer.setTransform(self._current_view_transform)
-        self._preview_thread = None
-        self._preview_worker = None
+
+        # ИСПРАВЛЕНИЕ: Не вызываем cleanup из тела сигнала потока!
+        # Используем QTimer чтобы cleanup произошёл в главном потоке
+        from PyQt5.QtCore import QTimer
+        QTimer.singleShot(0, self._cleanup_preview_thread)
 
     def _on_trace_confirmed(self, params: TraceParameters):
         self._last_trace_params = params
@@ -803,19 +808,10 @@ class MainPresenter(QObject):
             self._trace_dialog = None
 
     def _on_final_trace_ready(self, final_image):
+        """Обрабатывает готовое финальное изображение после трассировки."""
         self.view.hide_progress()
         if final_image:
             self._image_state_manager.apply_trace(final_image)
-
-            # ✅ TASK 1 FIX: Трассировkadagi rang soni razkладkага o'tkaziladi
-            if self._last_trace_params and self._last_trace_params.colors_enabled:
-                trace_colors = self._extract_dominant_colors_from_image(
-                    final_image,
-                    self._last_trace_params.colors
-                )
-                if trace_colors:
-                    self._allowed_colors = trace_colors
-
             processing_settings = self.view.get_processing_settings()
             self.view.display_image(
                 final_image,
@@ -827,9 +823,10 @@ class MainPresenter(QObject):
             self.view.set_export_button_enabled(False)
         else:
             self.view.show_error("Ошибка", "Не удалось применить трассировку.")
-        # Referenslarni tozalaymiz (thread o'zi o'chadi signal orqali)
-        self._final_trace_thread = None
-        self._final_trace_worker = None
+
+        # ИСПРАВЛЕНИЕ: cleanup главном потоке орқали
+        from PyQt5.QtCore import QTimer
+        QTimer.singleShot(0, self._cleanup_final_trace_thread)
 
     def _extract_dominant_colors_from_image(self, image, max_colors: int) -> list:
         """Трассировка rasmidan dominant ranglarni topib palitrada moslaydi."""
@@ -876,11 +873,11 @@ class MainPresenter(QObject):
         self._cleanup_final_trace_thread()
 
     def _cleanup_preview_thread(self):
+        """Очищает поток обработки превью."""
         if hasattr(self, '_preview_thread') and self._preview_thread:
             if self._preview_thread.isRunning():
                 self._preview_thread.quit()
                 self._preview_thread.wait(3000)
-            self._preview_thread.deleteLater()
             self._preview_thread = None
             self._preview_worker = None
 
@@ -889,7 +886,7 @@ class MainPresenter(QObject):
         if hasattr(self, '_final_trace_thread') and self._final_trace_thread:
             if self._final_trace_thread.isRunning():
                 self._final_trace_thread.quit()
-                self._final_trace_thread.wait(2000)
+                self._final_trace_thread.wait(3000)
             self._final_trace_thread = None
             self._final_trace_worker = None
 
