@@ -73,6 +73,12 @@ class ExportDialog(QDialog):
         self.check_stroke.setToolTip("Добавляет тонкую черную линию вокруг каждого страза.")
         options_layout.addWidget(self.check_separate_table)
         options_layout.addWidget(self.check_stroke)
+        self.check_bw = QCheckBox("Чёрно-белый режим (для печати)")
+        self.check_bw.setToolTip(
+            "Рисует все стразы в оттенках серого.\n"
+            "Контур каждого страза виден как тёмный круг на белом фоне."
+        )
+        options_layout.addWidget(self.check_bw)
 
         # --- Путь сохранения ---
         path_group = QGroupBox("Сохранение")
@@ -109,6 +115,7 @@ class ExportDialog(QDialog):
         self.button_box.accepted.connect(self.accept)
         self.button_box.rejected.connect(self.reject)
         self.btn_browse.clicked.connect(self._select_output_path)
+        self.check_bw.toggled.connect(self._on_settings_changed)
 
         # При любом изменении настроек обновляем состояние
         self.rb_png.toggled.connect(self._on_settings_changed)
@@ -157,6 +164,7 @@ class ExportDialog(QDialog):
             self.settings.variant = ExportVariant.NUMBERED
 
         self.settings.add_stroke = self.check_stroke.isChecked()
+        self.settings.black_and_white = self.check_bw.isChecked()
         self.settings.save_table_separately = self.check_separate_table.isChecked()
 
         self._update_file_info()

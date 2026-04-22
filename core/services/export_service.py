@@ -420,42 +420,53 @@ class ExportService:
             )
 
     def _draw_rhinestone_group_optimized(self, draw, rhinestones, diameter_mm, color_str,
-                                         has_stroke, group_data, export, output):
+                                        has_stroke, group_data, export, output):
         """Оптимизированное рисование группы стразов одного цвета и размера."""
         radius_px = (diameter_mm * output.dpi / 25.4) / 2 * self.ANTIALIAS_FACTOR
 
-        # Векторизованное вычисление позиций
         positions = [(r.position.x * self.ANTIALIAS_FACTOR,
-                      r.position.y * self.ANTIALIAS_FACTOR) for r in rhinestones]
+                    r.position.y * self.ANTIALIAS_FACTOR) for r in rhinestones]
 
         # Парсим цвет один раз для всей группы
         color = tuple(map(int, color_str.replace('rgb(', '').replace(')', '').split(',')))
 
-        # Пакетное рисование кругов
+        # ИСПРАВЛЕНИЕ: B&W режим — конвертируем цвет в оттенок серого
+        if getattr(export, 'black_and_white', False):
+            gray = int(0.299 * color[0] + 0.587 * color[1] + 0.114 * color[2])
+            # B&W режиме: белый фон, тёмный контур чтобы кружки были видны
+            fill_color = (gray, gray, gray)
+            # Всегда рисуем обводку в B&W чтобы кружки были видны на белом фоне
+            bw_stroke = True
+        else:
+            fill_color = color
+            bw_stroke = False
+
         for i, (x, y) in enumerate(positions):
             left, top = x - radius_px, y - radius_px
             right, bottom = x + radius_px, y + radius_px
 
-            # Проверяем, что страз в пределах холста
             if (right >= 0 and left <= draw.im.size[0] and
                     bottom >= 0 and top <= draw.im.size[1]):
 
-                # Обводка если нужна
-                if has_stroke:
+                # Обводка: либо пользователь включил, либо B&W режим
+                if has_stroke or bw_stroke:
                     stroke_width = max(1, self.ANTIALIAS_FACTOR)
                     draw.ellipse([left - stroke_width, top - stroke_width,
-                                  right + stroke_width, bottom + stroke_width], fill='black')
+                                right + stroke_width, bottom + stroke_width], fill='black')
 
                 # Основной круг
-                draw.ellipse([left, top, right, bottom], fill=color)
+                draw.ellipse([left, top, right, bottom], fill=fill_color)
 
-                # Номер если нужен - оптимизированная версия
+                # Номер если нужен
                 if export.variant == ExportVariant.NUMBERED and group_data:
                     rhinestone = rhinestones[i]
                     key = (rhinestone.color.name, rhinestone.size.name)
                     if key in group_data:
                         group_num = group_data[key]['number']
-                        text_color = self._get_contrasting_color_fast(color)
+                        if getattr(export, 'black_and_white', False):
+                            text_color = 'black' if gray > 128 else 'white'
+                        else:
+                            text_color = self._get_contrasting_color_fast(color)
                         self._draw_number_fast(draw, x, y, radius_px, group_num, text_color)
 
     def _create_group_data_fast(self, rhinestones) -> dict:

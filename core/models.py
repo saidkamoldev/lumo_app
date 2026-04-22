@@ -288,6 +288,16 @@ class ExportVariant(Enum):
     WITH_REPORT = auto()
 
 
+# @dataclass
+# class ExportSettings:
+#     """Все настройки для процесса экспорта."""
+#     format: ExportFormat = ExportFormat.PNG
+#     variant: ExportVariant = ExportVariant.NUMBERED
+#     output_path: str = ""
+#     filename: str = ""
+#     quality: int = 95
+#     add_stroke: bool = False
+#     save_table_separately: bool = True
 @dataclass
 class ExportSettings:
     """Все настройки для процесса экспорта."""
@@ -298,3 +308,4 @@ class ExportSettings:
     quality: int = 95
     add_stroke: bool = False
     save_table_separately: bool = True
+    black_and_white: bool = False  # ← YANGI FIELD
