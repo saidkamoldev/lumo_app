@@ -695,11 +695,31 @@ class MainPresenter(QObject):
                     dpi=settings.dpi
                 )
                 self.view.display_image(image_to_display, output_settings)
-                self._project = None
-                self.view.set_edit_button_enabled(False)
-                self.view.set_export_button_enabled(False)
+
+                # Автоматически генерируем стразы с выбранными цветами
+                proc_settings = self.view.get_processing_settings()
+                if proc_settings:
+                    proc_settings.output = output_settings
+                    proc_settings.allowed_colors = self._allowed_colors
+                    proc_settings.allowed_sizes = self._allowed_sizes
+                    self._project = self.processor.process(image_to_display, proc_settings)
+                    if self._project and self._project.rhinestones:
+                        self.view.update_project_preview(self._project, output_settings, preserve_view=False)
+                        self.view.update_color_report(self._project)
+                        self.view.set_edit_button_enabled(True)
+                        self.view.set_export_button_enabled(True)
+                    else:
+                        self._project = None
+                        self.view.set_edit_button_enabled(False)
+                        self.view.set_export_button_enabled(False)
+                else:
+                    self._project = None
+                    self.view.set_edit_button_enabled(False)
+                    self.view.set_export_button_enabled(False)
         except Exception as e:
             self.view.show_error("Ошибка", f"Не удалось создать макет из текста: {e}")
+            import traceback
+            traceback.print_exc()
         finally:
             self.view.hide_progress()
             if self._text_creator_dialog:

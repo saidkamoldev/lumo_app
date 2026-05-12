@@ -362,10 +362,13 @@ class ExportService:
         elif getattr(export, 'black_and_white', False):
             # B&W режим — белый фон (не прозрачный)
             final_image = Image.new('RGB', (render_width, render_height), 'white')
+        elif getattr(export, 'black_and_white', False):
+            final_image = Image.new('RGB', (render_width, render_height), 'white')
         else:
             final_image = Image.new('RGBA', (render_width, render_height), (255, 255, 255, 0))
 
         # ИСПРАВЛЕНИЕ: Супер-оптимизированное рисование стразов
+        print(f'[DEBUG] export.black_and_white={getattr(export, "black_and_white", "NOT_FOUND")}, format={export.format}, image_mode={final_image.mode}')
         self._fast_batch_draw_rhinestones(final_image, project.rhinestones, export, output)
 
         # Финальное масштабирование с высоким качеством
@@ -376,6 +379,15 @@ class ExportService:
 
         if export.format == ExportFormat.PNG:
             fmt_settings['dpi'] = (output.dpi, output.dpi)
+            if getattr(export, 'black_and_white', False):
+                # B&W режим — сохраняем как чистый RGB (белый фон)
+                if output_image.mode != 'RGB':
+                    rgb_img = Image.new('RGB', output_image.size, 'white')
+                    if output_image.mode == 'RGBA':
+                        rgb_img.paste(output_image, mask=output_image.split()[-1])
+                    else:
+                        rgb_img.paste(output_image)
+                    output_image = rgb_img
             output_image.save(path, 'PNG', **fmt_settings)
 
         elif export.format == ExportFormat.JPG:
@@ -401,9 +413,12 @@ class ExportService:
         Увеличивает скорость в 10-20 раз для больших проектов.
         """
         if getattr(export, 'black_and_white', False):
-            from PIL import ImageDraw as ID
-            bg_draw = ID.Draw(image)
-            bg_draw.rectangle([0, 0, image.width, image.height], fill='white')
+            # Заполняем весь холст белым цветом
+            pixels = image.load()
+            for py in range(image.height):
+                for px in range(image.width):
+                    pixels[px, py] = (255, 255, 255)
+            print(f'[DEBUG] Fon oq qilindi: {image.getpixel((0,0))}')
         draw = ImageDraw.Draw(image) if image.mode == 'RGB' else ImageDraw.Draw(image, 'RGBA')
         group_data = self._create_group_data_fast(rhinestones) if export.variant == ExportVariant.NUMBERED else {}
 
