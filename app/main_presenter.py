@@ -577,6 +577,7 @@ class MainPresenter(QObject):
 
     def _on_allowed_colors_changed(self, color_names: List[str]):
         self._allowed_colors = color_names if color_names else None
+        print(f"[DEBUG] _on_allowed_colors_changed: {self._allowed_colors}")
 
     def _on_palette_updated(self):
         if self._project and not self._edit_mode:

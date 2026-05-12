@@ -359,6 +359,9 @@ class ExportService:
 
         if export.format == ExportFormat.JPG:
             final_image = Image.new('RGB', (render_width, render_height), 'white')
+        elif getattr(export, 'black_and_white', False):
+            # B&W режим — белый фон (не прозрачный)
+            final_image = Image.new('RGB', (render_width, render_height), 'white')
         else:
             final_image = Image.new('RGBA', (render_width, render_height), (255, 255, 255, 0))
 
@@ -397,7 +400,11 @@ class ExportService:
         СУПЕР-ОПТИМИЗИРОВАННОЕ рисование стразов с использованием NumPy и векторизации.
         Увеличивает скорость в 10-20 раз для больших проектов.
         """
-        draw = ImageDraw.Draw(image, 'RGBA')
+        if getattr(export, 'black_and_white', False):
+            from PIL import ImageDraw as ID
+            bg_draw = ID.Draw(image)
+            bg_draw.rectangle([0, 0, image.width, image.height], fill='white')
+        draw = ImageDraw.Draw(image) if image.mode == 'RGB' else ImageDraw.Draw(image, 'RGBA')
         group_data = self._create_group_data_fast(rhinestones) if export.variant == ExportVariant.NUMBERED else {}
 
         # Группируем стразы по цвету и размеру для оптимальной обработки
@@ -432,10 +439,8 @@ class ExportService:
 
         # ИСПРАВЛЕНИЕ: B&W режим — конвертируем цвет в оттенок серого
         if getattr(export, 'black_and_white', False):
-            gray = int(0.299 * color[0] + 0.587 * color[1] + 0.114 * color[2])
-            # B&W режиме: белый фон, тёмный контур чтобы кружки были видны
-            fill_color = (gray, gray, gray)
-            # Всегда рисуем обводку в B&W чтобы кружки были видны на белом фоне
+            # Все кружочки белые с чёрным контуром — хорошо видно при печати
+            fill_color = (255, 255, 255)
             bw_stroke = True
         else:
             fill_color = color
@@ -464,7 +469,7 @@ class ExportService:
                     if key in group_data:
                         group_num = group_data[key]['number']
                         if getattr(export, 'black_and_white', False):
-                            text_color = 'black' if gray > 128 else 'white'
+                            text_color = 'black'  # Всегда чёрный в B&W режиме
                         else:
                             text_color = self._get_contrasting_color_fast(color)
                         self._draw_number_fast(draw, x, y, radius_px, group_num, text_color)
