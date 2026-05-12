@@ -157,7 +157,7 @@ class TextLayoutSettings:
     font_size: int = 100
     letter_spacing: int = 0
     text_color: RGBColor = RGBColor(0, 0, 0)
-    canvas_width_mm: float = 200.0
+    canvas_width_mm: float = 297.0
     canvas_height_mm: float = 100.0
     dpi: int = 150
     horizontal_align: str = "center"

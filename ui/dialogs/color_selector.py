@@ -174,9 +174,6 @@ class ColorItem(QFrame):
 
         super().mousePressEvent(event)
 
-        if event.button() == Qt.LeftButton:
-            QTimer.singleShot(1, self._start_move_tracking)
-
 
 class ColorSelectorPopup(QFrame):
     selectionChanged = pyqtSignal(list)
